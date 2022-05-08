@@ -8,7 +8,7 @@ def validUTF8(data):
     See <https://datatracker.ietf.org/doc/html/rfc3629#page-4>
     """
     skip = 0
-    len = len(data)
+    length = len(data)
     for ind in range(len):
         if skip > 0:
             skip -= 1
@@ -20,7 +20,7 @@ def validUTF8(data):
         elif data[ind] & 0b11111000 == 0b11110000:
             # 4-byte utf-8 character encoding
             span = 4
-            if len - ind >= span:
+            if length - ind >= span:
                 next_body = list(map(
                     lambda x: x & 0b11000000 == 0b10000000,
                     data[ind + 1: ind + span],
@@ -33,7 +33,7 @@ def validUTF8(data):
         elif data[ind] & 0b11110000 == 0b11100000:
             # 3-byte utf-8 character encoding
             span = 3
-            if len - ind >= span:
+            if length - ind >= span:
                 next_body = list(map(
                     lambda x: x & 0b11000000 == 0b10000000,
                     data[ind + 1: ind + span],
@@ -46,7 +46,7 @@ def validUTF8(data):
         elif data[ind] & 0b11100000 == 0b11000000:
             # 2-byte utf-8 character encoding
             span = 2
-            if len - ind >= span:
+            if length - ind >= span:
                 next_body = list(map(
                     lambda x: x & 0b11000000 == 0b10000000,
                     data[ind + 1: ind + span],
